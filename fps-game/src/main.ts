@@ -5,8 +5,8 @@ import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
 import { MeshBuilder } from "@babylonjs/core/Meshes/meshBuilder";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
-import { Color3 } from "@babylonjs/core/Maths/math.color";
-import { Ray } from "@babylonjs/core/Collsions/ray";
+import { Color3, Color4 } from "@babylonjs/core/Maths/math.color";
+import { Ray } from "@babylonjs/core/Culling/ray";
 import { PointerEventTypes } from "@babylonjs/core/Events/pointerEvents";
 
 const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
@@ -14,7 +14,7 @@ const engine = new Engine(canvas, true);
 
 const createScene = () => {
     const scene = new Scene(engine);
-    scene.clearColor = new Color3(0.1, 0.1, 0.2);
+    scene.clearColor = new Color4(0.1, 0.1, 0.2, 1);
 
     // Camera (FPS view)
     const camera = new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, Vector3.Zero(), scene);
@@ -57,7 +57,7 @@ const createScene = () => {
             // Check for intersection with boxes
             const hit = scene.pickWithRay(ray);
             
-            if (hit.pickedMesh && hit.pickedMesh.name.startsWith("box")) {
+            if (hit && hit.pickedMesh && hit.pickedMesh.name.startsWith("box")) {
                 // Remove the hit box
                 hit.pickedMesh.dispose();
                 
